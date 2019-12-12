@@ -26,10 +26,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca.generalpublic.pms.com
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.generalpublic.pms.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ce9da2b3c37d18b04361afdfb2f65dd892157cdabacd4fb86dc7dd0cd488fa98_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/6877067e8788d4c899980edd28eea5c93c8bb243b9e1946958c1d18539509b81_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.generalpublic.pms.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ce9da2b3c37d18b04361afdfb2f65dd892157cdabacd4fb86dc7dd0cd488fa98_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.generalpublic.pms.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/6877067e8788d4c899980edd28eea5c93c8bb243b9e1946958c1d18539509b81_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/generalpublic.pms.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.generalpublic.pms.com
@@ -43,10 +43,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca.doctor.pms.com
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.doctor.pms.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/c21378250e944804e8318d6c16d297bdd774808e6cb76c212ed1dba20aee2fac_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/afc25b95d56c326f354febf7601e4179244a38c0988591f9a1873cb329da0215_sk
     ports:
       - "8054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.doctor.pms.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/c21378250e944804e8318d6c16d297bdd774808e6cb76c212ed1dba20aee2fac_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.doctor.pms.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/afc25b95d56c326f354febf7601e4179244a38c0988591f9a1873cb329da0215_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/doctor.pms.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.doctor.pms.com
