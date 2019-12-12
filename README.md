@@ -25,3 +25,7 @@ Then create two folders inside pmschainsolo folder as following
 Then Run generate.sh file using this command.
 
 `./generate.sh`
+
+Now You will have all the binaries inside channel-artifacts and cryto-config folders.
+
+<i>If you need to increse the ammount of organizations you have to edit the crypto-config.yaml, configtx.yaml file according to your requirements.If you increse the ammout of organizations you have to change generate.sh file accordingly<i>
