@@ -11,3 +11,5 @@
 
 pmschainsolo/crypto-config/*
 pmschainsolo/channel-artifacts/*
+
+./chaincode/healthcare/node-modules
