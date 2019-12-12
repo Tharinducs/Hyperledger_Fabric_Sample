@@ -1,0 +1,28 @@
+#to enter into the cli container#
+
+docker exec -it cli bash
+
+#connect peer 0 of doctor#
+
+peer channel join -b pmschannel.block
+
+#connect peer 1 of doctor#
+
+CORE_PEER_LOCALMSPID=DoctorMSP CORE_PEER_MSPCONFIGPATH=//opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.pms.com/users/Admin@doctor.pms.com/msp CORE_PEER_ADDRESS=peer1.doctor.pms.com:10051 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.pms.com/peers/peer0.doctor.pms.com/tls/ca.crt  peer channel join -b pmschannel.block
+
+#connect peer 0 of generalpublic#
+
+CORE_PEER_LOCALMSPID=GeneralpublicMSP CORE_PEER_MSPCONFIGPATH=//opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/generalpublic.pms.com/users/Admin@generalpublic.pms.com/msp CORE_PEER_ADDRESS=peer0.generalpublic.pms.com:7051 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/generalpublic.pms.com/peers/peer0.generalpublic.pms.com/tls/ca.crt peer channel join -b pmschannel.block
+
+#connect peer 1 of generalpublic#
+
+CORE_PEER_LOCALMSPID=GeneralpublicMSP CORE_PEER_MSPCONFIGPATH=//opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/generalpublic.pms.com/users/Admin@generalpublic.pms.com/msp CORE_PEER_ADDRESS=peer1.generalpublic.pms.com:8051 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/generalpublic.pms.com/peers/peer0.generalpublic.pms.com/tls/ca.crt peer channel join -b pmschannel.block
+
+#updating the anchor peer of doctor#
+
+CORE_PEER_LOCALMSPID=DoctorMSP CORE_PEER_MSPCONFIGPATH=//opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.pms.com/users/Admin@doctor.pms.com/msp CORE_PEER_ADDRESS=peer0.doctor.pms.com:9051 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.pms.com/peers/peer0.doctor.pms.com/tls/ca.crt peer channel update -o orderer.pms.com:7050 -c pmschannel -f ./channel-artifacts/doctorMSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/pms.com/orderers/orderer.pms.com/msp/tlscacerts/tlsca.pms.com-cert.pem
+
+#updating the anchor peer of generalpublic#
+
+CORE_PEER_LOCALMSPID=GeneralpublicMSP CORE_PEER_MSPCONFIGPATH=//opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/generalpublic.pms.com/users/Admin@generalpublic.pms.com/msp CORE_PEER_ADDRESS=peer0.generalpublic.pms.com:7051 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/generalpublic.pms.com/peers/peer0.generalpublic.pms.com/tls/ca.crt peer channel update -o orderer.pms.com:7050 -c pmschannel -f ./channel-artifacts/GeneralpublicMSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/pms.com/orderers/orderer.pms.com/msp/tlscacerts/tlsca.pms.com-cert.pem
+

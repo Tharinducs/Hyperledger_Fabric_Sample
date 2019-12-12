@@ -1,0 +1,133 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+volumes:
+  orderer.pms.com:
+  peer0.generalpublic.pms.com:
+  peer1.generalpublic.pms.com:
+  peer0.doctor.pms.com:
+  peer1.doctor.pms.com:
+  ca.Generalpublic.pms.com:
+  ca.doctor.pms.com:
+  
+
+networks:
+  byfn:
+
+services:
+  ca.generalpublic.pms.com:
+    image: hyperledger/fabric-ca:1.4.4
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.generalpublic.pms.com
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.generalpublic.pms.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ce9da2b3c37d18b04361afdfb2f65dd892157cdabacd4fb86dc7dd0cd488fa98_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.generalpublic.pms.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ce9da2b3c37d18b04361afdfb2f65dd892157cdabacd4fb86dc7dd0cd488fa98_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/generalpublic.pms.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.generalpublic.pms.com
+    networks:
+      - byfn
+
+  ca.doctor.pms.com:
+    image: hyperledger/fabric-ca:1.4.4
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.doctor.pms.com
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.doctor.pms.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/c21378250e944804e8318d6c16d297bdd774808e6cb76c212ed1dba20aee2fac_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.doctor.pms.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/c21378250e944804e8318d6c16d297bdd774808e6cb76c212ed1dba20aee2fac_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/doctor.pms.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.doctor.pms.com
+    networks:
+      - byfn
+
+
+  orderer.pms.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.pms.com
+    container_name: orderer.pms.com
+    networks:
+      - byfn
+
+  peer0.generalpublic.pms.com:
+    container_name: peer0.generalpublic.pms.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.generalpublic.pms.com
+    networks:
+      - byfn
+
+  peer1.generalpublic.pms.com:
+    container_name: peer1.generalpublic.pms.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.generalpublic.pms.com
+    networks:
+      - byfn
+
+  peer0.doctor.pms.com:
+    container_name: peer0.doctor.pms.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.doctor.pms.com
+    networks:
+      - byfn
+
+  peer1.doctor.pms.com:
+    container_name: peer1.doctor.pms.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.doctor.pms.com
+    networks:
+      - byfn
+
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:latest
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=DEBUG
+      # - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.doctor.pms.com:9051
+      - CORE_PEER_LOCALMSPID=DoctorMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.pms.com/peers/peer0.doctor.pms.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.pms.com/peers/peer0.doctor.pms.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.pms.com/peers/peer0.doctor.pms.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.pms.com/users/Admin@doctor.pms.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./../chaincode/:/opt/gopath/src/github.com/chaincode
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on:
+      - orderer.pms.com
+      - peer0.generalpublic.pms.com
+      - peer1.generalpublic.pms.com
+      - peer0.doctor.pms.com
+      - peer1.doctor.pms.com
+      - ca.generalpublic.pms.com
+      - ca.doctor.pms.com
+    networks:
+      - byfn
