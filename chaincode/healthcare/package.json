@@ -11,8 +11,5 @@
   },
   "engine-strict": true,
   "author": "TharinduCS",
-  "license": "ISC",
-  "dependencies": {
-		"fabric-shim": "~1.4.0"
-	}
+  "license": "ISC"
 }

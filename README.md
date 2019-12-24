@@ -116,5 +116,27 @@ After suucessfully running that file Issue commands in clicommandreference file 
 
 Now you Have run a sample network using Hyperledgr Fabric.
 
+Now we can install chaincode. For that I will install chaincode on one of peer in each organization to do that issue commnds in the clicommandreference file inside pmschainsolo folder which comes under title of installing chaincode.
+
+After Installing the chaincode you have to instantiate the chaincode.
+
+To do that issue the commands in clicommandreference files which comes under title of instantiate chaincode it only should done one one peer per channel.
+
+Now we can do transactions.
+
+Commands are in the clicommandreference file.
+
+Now remove all the docker containers and volumes.
+
+Then write your own chaincode and put it into the chaincode folder.
+
+Then start the network again.
+
+Then install your new chaincode and instantiate it on the channel.
+
+Do transactions through cli.
+
+
+
 
 
